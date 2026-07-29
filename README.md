@@ -15,4 +15,12 @@ This project aims to integrate three perspectives:
 - Semantic Machine Learning (embeddings, semantic IDs, graph neural networks...)
 - Modern abstract mathematics and computer science (category, type, and topos theory)
 
-This is not, however, simply an exercise in creating theoretical connections between methodologes in different fields. It is a practical platform for synthesizing disparate techniques into powerful but accessible tools for classification, inference, and knowledge formation.
+This is not, however, simply an exercise in creating theoretical connections between methodologies in different fields. It is a practical platform for synthesizing disparate techniques into powerful but accessible tools for classification, inference, and knowledge formation.
+
+## UI Modes
+
+Mageiros offers three modes for viewing and interacting with structures and data:
+
+- Semantic mode: The default and most feature-rich mode. Semantic mode focuses on intuitive presentation of collections and relationships, easy access to textual information, and built-in tooling for ontology development and inference.
+- Categorical mode: This mode offers more rigorous presentation of the mathematical foundations of the system, for research, study, or formal validation.
+- Graph mode: Direct visualization of the persistent graph layer, which is a 2-category framework with extensions to represent categories, functors, and natural transformations.
