@@ -3,36 +3,71 @@
 
 Consider the game of checkers. We're going to represent it as a collection of categories in the mathematical sense.
 
-### Pieces
-First, we'll describe the possible configurations of pieces.
+### Local State
+First, we'll describe the possible configurations of pieces or squares.
 
-Pieces have an immutable property, _color_, with possible values _dark_ and _light_. By "immutable", I mean that a 
-piece cannot transition from dark to light. So we can model this as a discrete category **Chcl** with two objects.
+These local, stateful units have three properties, each of which have two states.
+- _color_
+  - _dark_
+  - _light_
+- _rank_
+  - _man_
+  - _king_
+- _presence_
+  - _active_
+  - _inactive_
 
-Pieces also have _rank_, which can have the values _man_ or _king_. So this category also has two objects, but because 
-a piece can transition from man to king, this is a preordered category, and in fact much stricter, a totally ordered 
-category **Chrk**.
+So we can model this as the discrete categories __Chcl__, __Chrk__, and __Chpr__, each with two objects, one for 
+each state. Now we can describe a product category __Chst__ induced by the first three categories.
 
-Now we can describe a product category **Chpc** induced by the first two categories. This is a skeletal category 
-showing that (dark, man) transitions to (dark, king), and similarly for light pieces.
+### Local transitions
+__Chst__ leaves out a lot of important structure; as a discrete category, it cannot capture the transitions 
+available to pieces and squares during a game of checkers. We will introduce some functors to correct this. 
+These kinds of structure do not commute, because transitions between piece states cannot be directly translated 
+into transitions in local board state (informally: pieces have to move to change, so they never change within a 
+single square). So these cannot be endofunctors, we have to introduce new categories so that we don't induce 
+invalid compositions. A notation convention: Appending '*' will indicate that we are adding a "piece-wise" element 
+or structure, and appending '@' will indicate a "square-wise" element or structure. 
 
-### Square state
-We need one more thing to represent all the possible states of a square on the board: the absence of a piece. So the 
-category we actually use for square state values is **Chsq**. There is an inclusion functor from **Chpc** to **Chsq**, 
-and the latter simply adds one additional object representing the empty square.
+- We add a "promotion" functor from __Chrk__ to __Chrk*__, reflecting that a piece can be promoted.
+  - This creates a morphism in __Chrk*__ from _man*_ to _king*_...
+  - ...inducing morphisms in __Chst*__ from every product with a _man*_ component to the ones that have a _king*_,
+  but hold the other two factors constant.
+- We add a "capture" functor from __Chpr__ to __Chpr*__, reflecting that a piece can be captured.
+  - This creates a morphism in __Chpr*__ from _active*_ to _inactive*_...
+  - ...inducing morphisms in __Chst*__ from every product with an _active*_ component to the ones that have an
+  _inactive*_, but hold the other two factors constant.
 
-The inclusion functor is free and forgetful, because a square cannot transition directly from one state in **Chpc** to 
-another; if the state of a square changes, it goes from empty to full (via leap) or vice versa (via leap or capture). 
-This means that the only morphisms in **Chsq** are to and from the empty square. All other states can either go to empty 
-or result from it, so the empty square is both initial and terminal. Thus **Chsq** is a pointed category.
+For __Chst@__, we use a similar approach, but the structure introduced is quite different. If the state of a square 
+changes, it goes from empty to full (via leap) or vice versa (via leap or capture). This means that the only morphisms 
+in __Chst@__ are transitions in the __Chpr@__ induced component (_inactive@_ is empty, regardless of 
+whether a capture was involved).
+
+- We introduce an "occupation" functor from __Chpr__ to __Chrp@__.
+  - This creates a morphism in __Chpr@__ from _active@_ to _inactive@_,
+  - as well as one from from _inactive@_ to _active@_,
+  - inducing morphisms in __Chst@__ to and from every product with an _active@_ component and the ones that have an
+  _inactive@_ component, but hold the other two factors constant.
+- The occupation functor also adds isomorphisms between all empty states; if the presence factor is _inactive@_, the
+  other factors are irrelevant.
+- The end result is that __Chst@__ is codiscrete.
+  - By composition, a square can transition between any pair of states.
+  - This is correct; in the middle of the board (and at this stage we do not know the square's position), squares can
+    over the course of the game be occupied by any configuration of piece, and subsequently any other configuration of
+    piece.
+  - We'll have to represent board positions, as introduced below, to have a basis for more powerful restrictions
+    capturing the full rules of any major checkers variant.
 
 ### Board state
 
 #### Base Categories: Board Structure and Time
 
-We need two base categories to index board state. The first one is relatively simple: a discrete category **Bsq** with 
-the 32 playable squares of the board. The second is a total order understood as a category **Turn**, with turns as objects 
-and transitions between turns as morphisms.
+We need two base categories to index board state. The first one is relatively simple: a quiver category __Bsq__ with 
+the 32 playable squares of the board as objects, and morphisms capturing adjacency. The default direction of adjacency 
+will be "playing as dark", so "playing as light" is simply **Bsq<sup>op</sup>**.
+
+The second is a total order understood as a category __Turn__, with turns as objects and transitions between turns as 
+morphisms. It will become apparently shortly that the turns are themselves monoidal categories.
 
 #### First Level of Indexing: Functors From **Bsq** to **Chsq**
 
