@@ -58,30 +58,25 @@ whether a capture was involved).
   - We'll have to represent board positions, as introduced below, to have a basis for more powerful restrictions
     capturing the full rules of any major checkers variant.
 
-### Board state
+### Global state
 
-#### Base Categories: Board Structure and Time
+#### Base Categories: Board Structure and Sequence of Turns
 
 We need two base categories to index board state. The first one is relatively simple: a quiver category __Bsq__ with 
 the 32 playable squares of the board as objects, and morphisms capturing adjacency. The default direction of adjacency 
 will be "playing as dark", so "playing as light" is simply **Bsq<sup>op</sup>**.
 
 The second is a total order understood as a category __Turn__, with turns as objects and transitions between turns as 
-morphisms. It will become apparently shortly that the turns are themselves monoidal categories.
+morphisms. It will become apparently shortly that the turns are themselves monoids.
 
-#### First Level of Indexing: Functors From **Bsq** to **Chsq**
+#### Board State and Legal Move Sequences
 
-Possible board states can be modeled as functors from **Bsq** to **Chsq**. This collection of board states supplies the 
-objects in the functor category **Chst**. Not all functors generate valid board states, but we'll identify the invalid 
-ones by noting that the morphisms in **Chst** (which are natural transformations) only connect valid board states. So 
-once you define constraints on valid moves, isolated elements of the category represent invalid board states; we 
-understand them more as board states that cannot be reached than as internally incoherent.
+Possible board states can be modeled as functors from **Bsq** to **Chst**. This collection of board states needs to be 
+further restricted to the ones that can be reached via sequences of legal moves in a game of checkers. We do this by 
+taking the free category on a quiver of legal moves to generate the wide subcategory **Bst**. Each morphism in **Bst** 
+is a single legal move.
 
-**Chst** is not a thin category because the graph it induces is not acyclic. Once any piece is promoted to king, its 
-ability to move both forward and back creates potential cycles of game play. These cycles are limited in practice by 
-repetition rules, but rather than try and capture them in **Chst**, we'll wait for **Chgms** below.
-
-The standard starting board state for checkers is, both intuitively and formally, the unique initial object in **Chst**.
+The standard starting board state for checkers is, both intuitively and formally, the unique initial object in **Bst**.
 There are many terminal objects modeling different ways in which the game can be dictated by the rules to be over, and 
 any object can technically be the end of the game if one player resigns.
 
