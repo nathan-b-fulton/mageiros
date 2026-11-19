@@ -1,9 +1,11 @@
 # Worked examples I: Checkers and Chess
+
 ## Checkers represented abstractly in a category theoretic framework
 
 Consider the game of checkers. We're going to represent it as a collection of categories in the mathematical sense.
 
 ### Local State
+
 First, we'll describe the possible configurations of pieces or squares.
 
 These local, stateful units have three properties, each of which have two states.
@@ -21,6 +23,7 @@ So we can model this as the discrete categories __Chcl__, __Chrk__, and __Chpr__
 each state. Now we can describe a product category __Chst__ induced by the first three categories.
 
 ### Local transitions
+
 __Chst__ leaves out a lot of important structure; as a discrete category, it cannot capture the transitions 
 available to pieces and squares during a game of checkers. We will introduce some functors to correct this. 
 These kinds of structure do not commute, because transitions between piece states cannot be directly translated 
@@ -64,23 +67,26 @@ whether a capture was involved).
 
 We need two base categories to index board state. The first one is relatively simple: a quiver category __Bsq__ with 
 the 32 playable squares of the board as objects, and morphisms capturing adjacency. The default direction of adjacency 
-will be "playing as dark", so "playing as light" is simply **Bsq<sup>op</sup>**.
+will be "playing as dark", so "playing as light" is simply __Bsq<sup>op</sup>__.
 
-The second is a total order understood as a category __Turn__, with turns as objects and transitions between turns as 
-morphisms. It will become apparently shortly that the turns are themselves monoids.
+For the second, indexing states over the course of a game, we just use (ℕ,≤), but we also introduce a functor from 
+__Chcl__ to its codiscrete analogue __Tncl__, representing the transitions between turns. There is a functor from (ℕ,≤) 
+to __Tncl__ that maps odd numbers to _dark_, even numbers to _light_, and ordering morphisms to the cycle that switches 
+in the appropriate direction. We'll add more to this set of structures around turns, but first we need to do a bit more 
+with board states.
 
 #### Board State and Legal Move Sequences
 
-Possible board states can be modeled as functors from **Bsq** to **Chst**. This collection of board states needs to be 
+Possible board states can be modeled as functors from __Bsq__ to __Chst__. This collection of board states needs to be 
 further restricted to the ones that can be reached via sequences of legal moves in a game of checkers. We do this by 
-taking the free category on a quiver of legal moves to generate the wide subcategory **Bst**. Each morphism in **Bst** 
+taking the free category on a quiver of legal moves to generate the wide subcategory __Bst__. Each morphism in __Bst__ 
 is a single legal move.
 
-The standard starting board state for checkers is, both intuitively and formally, the unique initial object in **Bst**.
+The standard starting board state for checkers is, both intuitively and formally, the unique initial object in __Bst__.
 There are many terminal objects modeling different ways in which the game can be dictated by the rules to be over, and 
 any object can technically be the end of the game if one player resigns.
 
-#### Second Level of Indexing: Functors from **Turn** to **Chst**
+#### Turns and games
 
 We now introduce another functor category, **Chgms**, the category of legal games of checkers. The objects in this 
 category are functors from **Turn** to **Chst**, each one of which models a game of checkers with only legal moves. 
