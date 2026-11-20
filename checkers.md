@@ -48,7 +48,7 @@ whether a capture was involved).
 
 - We introduce an "occupation" functor from __Chpr__ to __Chpr@__.
   - This creates a morphism in __Chpr@__ from _active@_ to _inactive@_,
-  - as well as one from from _inactive@_ to _active@_,
+  - as well as one from _inactive@_ to _active@_,
   - inducing morphisms in __Chst@__ to and from every product with an _active@_ component and the ones that have an
   _inactive@_ component, but hold the other two factors constant.
 - The occupation functor also adds isomorphisms between all empty states; if the presence factor is _inactive@_, the
@@ -69,35 +69,36 @@ We need two base categories to index board state. The first one is relatively si
 the 32 playable squares of the board as objects, and morphisms capturing adjacency. The default direction of adjacency 
 will be "playing as dark", so "playing as light" is simply __Bsq<sup>op</sup>__.
 
-For the second, indexing states over the course of a game, we just use (ℕ,≤), but we also introduce a functor from 
-__Chcl__ to its codiscrete analogue __Tncl__, representing the transitions between turns. There is a functor $F$ from 
-(ℕ,≤) to __Tncl__ that maps even numbers to _dark_, odd numbers to _light_, and ordering morphisms to the cycle that 
-switches in the appropriate direction. We'll add more to this set of structures around turns, but first we need to do a 
-bit more with board states.
+For the second, indexing states over the course of a game, we just use finite ordinals 
+$`[n] = (0 \to 1 \to \dots \to n)`$, but we also introduce a functor from __Chcl__ to its codiscrete analogue __Tncl__, 
+representing the transitions between turns. There is a functor $F$ from the finite ordinals to __Tncl__ that maps even 
+numbers to _dark_, odd numbers to _light_, and ordering morphisms to the cycle that switches in the appropriate direction. 
+We'll add more to this set of structures around turns, but first we need to do a bit more with board states.
 
 #### Board State and Legal Move Sequences
 
-Possible board states can be modeled as functors from __Bsq__ to __Chst@__. This collection of board states needs to be 
+Possible board states can be modeled as pairs $`(B, c)`$ where $B$ is a functor from __Bsq__ to __Chst@__, and 
+$c \in \text{Ob}(\mathbf{Tncl})$ indicates whose turn the move falls within. This collection of board states needs to be 
 further restricted to the ones that can be reached via sequences of legal moves in a game of checkers. We do this by 
 taking the free category on a quiver whose vertices are board states and whose edges are legal moves: __Bst__. Each 
 generating edge of __Bst__ is a single legal move, and morphisms are legal move sequences.
 
-The standard starting board state for checkers is a minimal object in __Bst__, and there are many maximal objects that 
-model different ways in which the game can be dictated by the rules to be over. In fact any object can technically be 
-the end of the game if one player resigns, though we only regard states with no valid moves out as formally maximal.
+The standard starting board state for checkers, paired with _dark_ to acknowledge that dark goes first in standard 
+American rules, is a root object in __Bst__, and there are many sink objects that model different ways in which the game 
+can be dictated by the rules to be over. In fact any object can technically be the end of the game if one player resigns, 
+though we only regard states with no valid moves out as formal sinks.
 
 #### Turns and games
 
 We now introduce another functor category, __Chgms__, the category of legal games of checkers. The objects in this 
-category are functors from (ℕ,≤) to __Bst__, each one of which models a game of checkers with only legal turns. 
-Component-wise, the objects in (ℕ,≤) map to states of the board that obtain at the start of turns, and the morphisms 
-map to legal turns, which might be one move or several moves (if jumps are involved). Composition in __Bst__ provides 
-morphisms for multi-move turns.
+category are functors from the finite ordinals to __Bst__, each one of which models a game of checkers with only legal 
+turns. Component-wise, the finite ordinals map to states of the board that obtain at the start of turns, and the order 
+morphisms map to legal turns, which might be one move or several moves (if jumps are involved). Composition in __Bst__ 
+provides morphisms for multi-move turns.
 
-There is a further functor $G$ from __Bst__ to __Tncl__ that sends state objects to the color(s) that may start a turn 
-in that state, and moves to the turn transition that they induce. If a move does not end the turn, it is sent to the 
-identity morphism for the current color. Any triangle of $F$, $G$, and any functor in __Chgms__ must commute, so that 
-composite paths in __Bst__ can be shown to preserve turn order. Put a bit more rigorously, __Chgms__ is a subcategory 
-of the slice category $`\(\mathbf{Cat} / \mathbf{Tncl}\)`$, or a fiber of the post-composition functor: 
-$$`\(G_*: [\mathbb{N}, \mathbf{Bst}] \to [\mathbb{N}, \mathbf{Tncl}]\)`$$ 
-over F).
+There is a further functor $G$ from __Bst__ to __Tncl__ that sends state objects to the color that starts a turn in that 
+state, and moves to the turn transition that they induce. If a move does not end the turn, it is sent to the identity 
+morphism for the current color. Any triangle of $F$, $G$, and any functor in __Chgms__ must commute, so that composite 
+paths in __Bst__ can be shown to preserve turn order. Put a bit more rigorously, __Chgms__ is a subcategory of the slice 
+category $`\mathbf{Cat} / \mathbf{Tncl}`$, or a fiber of the post-composition functor 
+$`G_*: [\mathbf{FinOrd}, \mathbf{Bst}] \to [\mathbf{FinOrd}, \mathbf{Tncl}]`$ over F.
