@@ -46,7 +46,7 @@ changes, it goes from empty to full (via leap) or vice versa (via leap or captur
 in __Chst@__ are transitions in the __Chpr@__ induced component (_inactive@_ is empty, regardless of 
 whether a capture was involved).
 
-- We introduce an "occupation" functor from __Chpr__ to __Chrp@__.
+- We introduce an "occupation" functor from __Chpr__ to __Chpr@__.
   - This creates a morphism in __Chpr@__ from _active@_ to _inactive@_,
   - as well as one from from _inactive@_ to _active@_,
   - inducing morphisms in __Chst@__ to and from every product with an _active@_ component and the ones that have an
@@ -77,14 +77,14 @@ bit more with board states.
 
 #### Board State and Legal Move Sequences
 
-Possible board states can be modeled as functors from __Bsq__ to __Chst__. This collection of board states needs to be 
+Possible board states can be modeled as functors from __Bsq__ to __Chst@__. This collection of board states needs to be 
 further restricted to the ones that can be reached via sequences of legal moves in a game of checkers. We do this by 
-taking the free category on a quiver of legal moves to generate the wide subcategory __Bst__. Each morphism in __Bst__ 
-is a single legal move.
+taking the free category on a quiver whose vertices are board states and whose edges are legal moves: __Bst__. Each 
+generating edge of __Bst__ is a single legal move, and morphisms are legal move sequences.
 
-The standard starting board state for checkers is, both intuitively and formally, the unique initial object in __Bst__.
-There are many terminal objects modeling different ways in which the game can be dictated by the rules to be over, and 
-any object can technically be the end of the game if one player resigns.
+The standard starting board state for checkers is a minimal object in __Bst__, and there are many maximal objects that 
+model different ways in which the game can be dictated by the rules to be over. In fact any object can technically be 
+the end of the game if one player resigns, though we only regard states with no valid moves out as formally maximal.
 
 #### Turns and games
 
@@ -94,7 +94,10 @@ Component-wise, the objects in (ℕ,≤) map to states of the board that obtain 
 map to legal turns, which might be one move or several moves (if jumps are involved). Composition in __Bst__ provides 
 morphisms for multi-move turns.
 
-There is a further functor $G$ from __Bst__ to __Tncl__ that sends state objects to the color(s) that may start a turn in 
-that state, and moves to the turn transition that they induce. If a move does not end the turn, it is sent to the 
+There is a further functor $G$ from __Bst__ to __Tncl__ that sends state objects to the color(s) that may start a turn 
+in that state, and moves to the turn transition that they induce. If a move does not end the turn, it is sent to the 
 identity morphism for the current color. Any triangle of $F$, $G$, and any functor in __Chgms__ must commute, so that 
-composite paths in __Bst__ can be shown to preserve turn order.
+composite paths in __Bst__ can be shown to preserve turn order. Put a bit more rigorously, __Chgms__ is a subcategory 
+of the slice category $`\(\mathbf{Cat} / \mathbf{Tncl}\)`$, or a fiber of the post-composition functor: 
+$$`\(G_*: [\mathbb{N}, \mathbf{Bst}] \to [\mathbb{N}, \mathbf{Tncl}]\)`$$ 
+over F).
