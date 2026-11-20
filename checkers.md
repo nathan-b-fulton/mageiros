@@ -70,10 +70,10 @@ the 32 playable squares of the board as objects, and morphisms capturing adjacen
 will be "playing as dark", so "playing as light" is simply __Bsq<sup>op</sup>__.
 
 For the second, indexing states over the course of a game, we just use (ℕ,≤), but we also introduce a functor from 
-__Chcl__ to its codiscrete analogue __Tncl__, representing the transitions between turns. There is a functor from (ℕ,≤) 
-to __Tncl__ that maps odd numbers to _dark_, even numbers to _light_, and ordering morphisms to the cycle that switches 
-in the appropriate direction. We'll add more to this set of structures around turns, but first we need to do a bit more 
-with board states.
+__Chcl__ to its codiscrete analogue __Tncl__, representing the transitions between turns. There is a functor $F$ from 
+(ℕ,≤) to __Tncl__ that maps even numbers to _dark_, odd numbers to _light_, and ordering morphisms to the cycle that 
+switches in the appropriate direction. We'll add more to this set of structures around turns, but first we need to do a 
+bit more with board states.
 
 #### Board State and Legal Move Sequences
 
@@ -88,13 +88,13 @@ any object can technically be the end of the game if one player resigns.
 
 #### Turns and games
 
-We now introduce another functor category, **Chgms**, the category of legal games of checkers. The objects in this 
-category are functors from **Turn** to **Chst**, each one of which models a game of checkers with only legal moves. 
-Component-wise, the objects in **Turn** map to the states of the board at the beginning of turns, and the morphisms map 
-to legal moves from that board state, or another board state reached using a jump that enables a subsequent jump. In 
-this latter case, the additional jumps are mapped from endofunctors in **Turn**, indicating that several moves happened 
-within the same turn due to the chaining properties of jumps in Checkers.
+We now introduce another functor category, __Chgms__, the category of legal games of checkers. The objects in this 
+category are functors from (ℕ,≤) to __Bst__, each one of which models a game of checkers with only legal turns. 
+Component-wise, the objects in (ℕ,≤) map to states of the board that obtain at the start of turns, and the morphisms 
+map to legal turns, which might be one move or several moves (if jumps are involved). Composition in __Bst__ provides 
+morphisms for multi-move turns.
 
-There is a unique functor from **Turn** back to **Chcl**, showing whose turn it is. This tracks that turns strictly 
-alternate, and as noted above, a move may be an endomorphism in **Turn** that does not "advance the turn", even if it 
-does map to a change in board state in **Chst**.
+There is a further functor $G$ from __Bst__ to __Tncl__ that sends state objects to the color(s) that may start a turn in 
+that state, and moves to the turn transition that they induce. If a move does not end the turn, it is sent to the 
+identity morphism for the current color. Any triangle of $F$, $G$, and any functor in __Chgms__ must commute, so that 
+composite paths in __Bst__ can be shown to preserve turn order.
